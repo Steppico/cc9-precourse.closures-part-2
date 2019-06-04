@@ -13,7 +13,7 @@ describe("gameGenerator", () => {
     const bound = 4;
     const game = gameGenerator(bound);
     const number = [];
-    for (let i = 0; i < bound; i++) {
+    for (let i = 0; i <= bound; i++) {
       if (game.guess(i)) {
         number.push(i);
       }
@@ -21,14 +21,44 @@ describe("gameGenerator", () => {
     expect(number.length).toBe(1);
   });
 
+  it("should have a guess method", ()=>{
+    const game = gameGenerator(1);
+    expect(game.guess).toBeDefined();
+  })
+
   it("should have a reset method", () => {
-    // How do you test for this?
-    expect(false).toBeTruthy();
+    const bound = 16;
+    const game = gameGenerator(bound);
+    game.reset();
+    console.log("mannaiaboia", game.reset());
+    expect(game.reset).toBeDefined();
+    expect(game.reset).not.toEqual(bound);
+    const x = [];
+    for (let i = 0; i <= x.length; i++) {
+
+    }
   });
 
-  it("create your own test", () => {
-    expect(false).toBeTruthy();
+  it("should have a give up method", () => {
+    const game = gameGenerator(4);
+    expect(game.giveUp).toBeDefined();
   });
+
+  it("give up should return an object", ()=>{
+    const game = gameGenerator(1)
+    game.giveUp();
+    expect(typeof game).toBe("object")
+  })
+
+  it("give up should reset the game",()=>{
+    const bound = 100
+    const game = gameGenerator(bound)
+    console.log("dayum", game.reset)
+    game.giveUp();
+    spyOn(game.giveUp,"reset")
+    expect(game.giveUp.reset).toHaveBeenCalled();
+  }) 
+
 });
 
 describe("accountGenerator", () => {
