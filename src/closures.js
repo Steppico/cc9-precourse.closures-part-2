@@ -73,6 +73,7 @@ function gameGenerator(x) {
 function accountGenerator(initial) {
   let balance = initial;
   let prevBal = 0;
+  let transaction;
   let transHis = [];
   let avgDepo = 0;
   let avgWith = 0;
