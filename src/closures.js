@@ -9,64 +9,65 @@ function randomInteger(n) {
 }
 
 function gameGenerator(x) {
+
   let upperBound = x;
   let winningNum = randomInteger(x);
-  console.log("test uB e x", upperBound, x)
-  console.log("test winner", winningNum)
   let result = {};
   let guesses = 0;
 
-  return {
+  if (typeof x !== "number") {
+    return 'Please insert a number.'
+  } else {
+    return {
 
-    guess(i){
-      guesses++
-      console.log(i)
-      if (i > upperBound) {
-        result = {
-          Message: `Try again with a number between 0 and ${upperBound}.`,
-          Status: false
+      guess(i){
+        if (typeof i !== "number") {
+          return null;
+        } else {
+          guesses++;
+          if (i > upperBound) {
+            result = {
+              Message: `Try again with a number between 0 and ${upperBound}.`,
+              Status: false
+            }
+          }
+          if (i === winningNum) {
+            result = {
+              Message: "Congrats! This is correct",
+              Status: true
+            }
+          } else {
+            result = {
+              Message: "Aw naw! Try again",
+              Status: false
+            }
+          }
         }
-      }
-      if (i === winningNum) {
-        console.log("sono qua!", i)
-        result = {
-          Message: "Congrats! This is correct",
-          Status: true
+        return result.Status;
+      },
+      
+      reset() {
+        let oldWin = winningNum;
+        while (winningNum === oldWin) {
+          winningNum = randomInteger(x);
         }
-      } else {
-        result = {
-          Message: "Aw naw! Try again",
-          Status: false
-        }
-      }
-      console.log("maddonna", result.Status === true)
-      return result.Status === true;
-    },
-    
-    reset() {
-      let oldWin = winningNum;
-      winningNum = randomInteger(x);
-      guesses = 0;
-      console.log("nuovi signò!", winningNum, guesses);
-      if (winningNum === oldWin) {
-        winningNum = randomInteger(x);
-        return winningNum;
-      } else {
-        return winningNum;
-      }
-    },
+        guesses = 0;
+        },
 
-    giveUp() {
-      result = {
-        Message: `You gave up! The number was ${winningNum}. Game reset.`,
-        Status: false
-      };
-      this.reset();
-      console.log("sentiunpò", winningNum, guesses)
-      console.log(result.Message)
-      return result;
+      giveUp() {
+        result = {
+          Message: `You gave up! The number was ${winningNum}. The game will be reset.`,
+          Status: false
+        };
+        this.reset();
+        return result.Message;
+      },
+
+      numberGuesses() {
+        return guesses;
+      }
     }
-  } 
+  }
 }
 
 function accountGenerator(initial) {
