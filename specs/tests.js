@@ -26,19 +26,19 @@ describe("gameGenerator", () => {
     game = gameGenerator(bound);
     expect(typeof game).toBe("string")
     expect(game.guess).not.toBeDefined();
-  })
+  });
 
   it("should have a guess method", ()=>{
     const game = gameGenerator(1);
     expect(game.guess).toBeDefined();
-  })
+  });
 
   it("guess should only accept numbers as paramenter", ()=>{
     const bound = 10;
     game = gameGenerator(bound);
     expect(game.guess("goo")).toBe(null);
     expect(game.numberGuesses()).toBe(0);
-  })
+  });
 
   it("should have a reset method", () => {
     const bound = 16;
@@ -64,7 +64,7 @@ describe("gameGenerator", () => {
     const game = gameGenerator(1)
     game.giveUp();
     expect(typeof game).toBe("object")
-  })
+  });
 
   it("give up should reset the game",()=>{
     let game = gameGenerator(60);
@@ -83,12 +83,12 @@ describe("gameGenerator", () => {
       }
     }
     expect(firstRes[0]).not.toEqual(secondRes[0]);
-  })
+  });
 
   it("should have a method numberGuesses", ()=> {
     const game = gameGenerator(3);
     expect(game.numberGuesses).toBeDefined();
-  })
+  });
 
   it("numberGuesses should return the number of game played", ()=>{
     const bound = 10
@@ -98,7 +98,7 @@ describe("gameGenerator", () => {
       game.guess(Math.floor(Math.random()*bound));
     }
     expect(game.numberGuesses()).toEqual(playedGames)
-  })
+  });
 
 });
 
@@ -133,7 +133,7 @@ describe("accountGenerator", () => {
     const account = accountGenerator(500);
     const withdraw = account.withdraw(300);
     expect(withdraw.after).toBe(200); 
-  })
+  });
 
   it("withdraw should deny the transaction if the balance is smaller than the requested amount",()=>{
     const account = accountGenerator(500);
@@ -193,6 +193,20 @@ describe("accountGenerator", () => {
     account.withdraw(10000);
     expect(account.averageTransaction().deposit).toBe(1500);
     expect(account.averageTransaction().withdrawal).toBe(300);
+  });
+
+  it("every deposit should have a time object", ()=>{
+    const account = accountGenerator(50);
+    account.deposit(10);
+    expect(account.deposit().time).toBeTruthy();
+  });
+
+  it("every withdrawal should have a time object", ()=>{
+    const account = accountGenerator(50);
+    account.withdraw(10);
+    expect(account.withdraw().time).toBeTruthy();
+    account.withdraw(100);
+      expect(account.withdraw().time).toBeTruthy();
   });
 
 });
