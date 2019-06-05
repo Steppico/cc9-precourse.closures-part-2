@@ -33,12 +33,12 @@ function gameGenerator(x) {
           }
           if (i === winningNum) {
             result = {
-              Message: "Congrats! This is correct",
+              Message: "Congratulations, you guessed it!",
               Status: true
             }
           } else {
             result = {
-              Message: "Aw naw! Try again",
+              Message: "Wrong, try again",
               Status: false
             }
           }
@@ -91,20 +91,23 @@ function accountGenerator(initial) {
           amount: amount,
           before: prevBal,
           after: balance,
-          status: "approved"
+          status: "approved",
+          time: new Date()
+        }
+        transHis.push(transaction);
+        return transaction;
+      } else {
+        transaction = {
+          type: "withdrawal",
+          amount: amount,
+          before: balance,
+          after: balance,
+          status: "denied",
+          time: new Date()
         }
         transHis.push(transaction);
         return transaction;
       }
-      transaction = {
-        type: "withdrawal",
-        amount: amount,
-        before: balance,
-        after: balance,
-        status: "denied"
-      }
-      transHis.push(transaction);
-      return transaction;
     },
     deposit: function(amount) {
       prevBal = balance;
@@ -115,7 +118,8 @@ function accountGenerator(initial) {
         amount: amount,
         before: prevBal,
         after: balance,
-        status: "approved"
+        status: "approved",
+        time: new Date()
       };
       transHis.push(transaction);
       return transaction;
