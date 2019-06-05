@@ -72,6 +72,10 @@ function gameGenerator(x) {
 
 function accountGenerator(initial) {
   let balance = initial;
+  let prevBal = 0;
+  let transHis = [];
+  let avgDepo = 0;
+  let avgWith = 0;
 
   return {
     
@@ -81,41 +85,66 @@ function accountGenerator(initial) {
 
     withdraw: function(amount) {
       if (balance - amount >= 0) {
+        prevBal = balance;
         balance = balance - amount;
-        return `Here’s your money: $${amount}`;
+        avgWith += amount;
+        transaction = {
+          type: "withdrawal",
+          amount: amount,
+          before: prevBal,
+          after: balance,
+          status: "approved"
+        }
+        transHis.push(transaction);
+        return transaction;
       }
-      return "Insufficient funds.";
+      transaction = {
+        type: "withdrawal",
+        amount: amount,
+        before: balance,
+        after: balance,
+        status: "denied"
+      }
+      transHis.push(transaction);
+      return transaction;
     },
     deposit: function(amount) {
+      prevBal = balance;
       balance = balance + amount;
-      return `Your balance is: $${balance}`;
+      avgDepo += amount;
+      transaction = {
+        type: "deposit",
+        amount: amount,
+        before: prevBal,
+        after: balance,
+        status: "approved"
+      };
+      transHis.push(transaction);
+      return transaction;
+    },
+
+    transactionHistory: function(n) {
+      if (n >= transHis.length) {
+        return transHis;
+      }
+      let num = transHis.length-n;
+      return transHis.slice(num);
+    },
+    
+    averageTransaction: function() {
+      let depoHis = transHis.filter(x => x.type === "deposit");
+      let withHis = transHis.filter(x => x.type === "withdrawal" && x.status !== "denied");
+      return {
+        deposit: avgDepo/depoHis.length,
+        withdrawal: avgWith/withHis.length
+      }
     }
-  };
+
+  }
 }
 
 
 /*
-- [ ] Add function `getBalance` that returns the current
-     balance
-- [ ] Change `withdraw` to return a transaction object
-     (see below)
-- [ ] Change `deposit` to return a transaction object 
-      (see below)
-- [ ] Implement a function `transactionHistory` to get
-  the last `n` withdrawals or deposits 💵 (see below)
-
-   - [ ] Implement a function `averageTransaction` 
-  that determines the average withdrawal and deposit
-  amounts 💰. _IMPORTANT: Only approved transactions
-  count towards the total!_. It should return an object
-  that looks like
-
-    ```js
-    {
-      deposit: number,
-      withdrawal: number
-    }
-    ```
 
   - [ ] Use the `Date` object to incorporate a
     key `time` into the transactions 📅

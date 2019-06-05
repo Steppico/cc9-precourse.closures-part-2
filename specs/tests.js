@@ -110,6 +110,11 @@ describe("accountGenerator", () => {
 
 
   it("should have a getBalance function", () => {
+    const account = accountGenerator(0)
+    expect(account.getBalance).toBeDefined();
+  });
+
+  it("getBalance should work!",()=>{
     const money = 1000;
     const account = accountGenerator(money);
     expect(account.getBalance()).toBe(money);
@@ -117,4 +122,77 @@ describe("accountGenerator", () => {
     account.deposit(100);
     expect(account.getBalance()).toBe(600);
   });
+
+  it("withdraw should return an object",()=>{
+    const account = accountGenerator(450);
+    const withdraw = account.withdraw(200);
+    expect(typeof withdraw).toBe("object")
+  });
+
+  it("withdraw should... work!", ()=>{
+    const account = accountGenerator(500);
+    const withdraw = account.withdraw(300);
+    expect(withdraw.after).toBe(200); 
+  })
+
+  it("withdraw should deny the transaction if the balance is smaller than the requested amount",()=>{
+    const account = accountGenerator(500);
+    const withdraw = account.withdraw(600);
+    expect(withdraw.status).toBe("denied");
+  });
+
+  it("deposit should return an object", ()=>{
+    const account = accountGenerator(1000);
+    const deposit = account.deposit(100);
+    expect(typeof deposit).toBe("object");
+  });
+  
+  it("deposit should... work!", ()=>{
+    const account = accountGenerator(0);
+    const deposit = account.deposit(1000);
+    expect(deposit.after).toBe(1000);
+  });
+
+  it("should have a transactionHistory function", ()=>{
+    const account = accountGenerator(1000);
+    expect(account.transactionHistory).toBeDefined();
+    expect(typeof account.transactionHistory).toBe("function")
+  });
+
+  it("transactionHistory should... work!", ()=>{
+    const account = accountGenerator(1000);
+    account.withdraw(100);
+    account.withdraw(200);
+    account.withdraw(300);
+    account.deposit(500);
+    const transaction = account.transactionHistory(3);
+    expect(transaction.length).toBe(3)
+  });
+
+  it("return all transactions if the transactionHistory parameter is greater than the number of transactions",()=>{
+    const account = accountGenerator(1000);
+    account.withdraw(100);
+    account.withdraw(300);
+    account.deposit(500);
+    const transaction = account.transactionHistory(6);
+    expect(transaction.length).toBe(3);
+  });
+
+  it("should have an averageTransaction function", ()=>{
+    const account = accountGenerator(8000);
+    expect(account.averageTransaction).toBeDefined();
+    expect(typeof account.averageTransaction).toBe("function");
+  });
+
+  it ("averageTransaction should... work!", ()=>{
+    const account = accountGenerator(0);
+    account.deposit(1000);
+    account.deposit(2000);
+    account.withdraw(200);
+    account.withdraw(400);
+    account.withdraw(10000);
+    expect(account.averageTransaction().deposit).toBe(1500);
+    expect(account.averageTransaction().withdrawal).toBe(300);
+  });
+
 });
