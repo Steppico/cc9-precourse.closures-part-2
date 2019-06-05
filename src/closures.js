@@ -74,6 +74,11 @@ function accountGenerator(initial) {
   let balance = initial;
 
   return {
+    
+    getBalance: function() {
+      return balance;  
+    },
+
     withdraw: function(amount) {
       if (balance - amount >= 0) {
         balance = balance - amount;
@@ -87,3 +92,31 @@ function accountGenerator(initial) {
     }
   };
 }
+
+
+/*
+- [ ] Add function `getBalance` that returns the current
+     balance
+- [ ] Change `withdraw` to return a transaction object
+     (see below)
+- [ ] Change `deposit` to return a transaction object 
+      (see below)
+- [ ] Implement a function `transactionHistory` to get
+  the last `n` withdrawals or deposits 💵 (see below)
+
+   - [ ] Implement a function `averageTransaction` 
+  that determines the average withdrawal and deposit
+  amounts 💰. _IMPORTANT: Only approved transactions
+  count towards the total!_. It should return an object
+  that looks like
+
+    ```js
+    {
+      deposit: number,
+      withdrawal: number
+    }
+    ```
+
+  - [ ] Use the `Date` object to incorporate a
+    key `time` into the transactions 📅
+*/

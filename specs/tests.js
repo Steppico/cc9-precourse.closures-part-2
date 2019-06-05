@@ -108,7 +108,13 @@ describe("accountGenerator", () => {
     expect(typeof accountGenerator).toBe("function");
   });
 
-  it("should have some tests", () => {
-    expect(false).toBeTruthy();
+
+  it("should have a getBalance function", () => {
+    const money = 1000;
+    const account = accountGenerator(money);
+    expect(account.getBalance()).toBe(money);
+    account.withdraw(500);
+    account.deposit(100);
+    expect(account.getBalance()).toBe(600);
   });
 });
