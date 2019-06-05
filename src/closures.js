@@ -55,12 +55,9 @@ function gameGenerator(x) {
         },
 
       giveUp() {
-        result = {
-          Message: `You gave up! The number was ${winningNum}. The game will be reset.`,
-          Status: false
-        };
+        result = winningNum
         this.reset();
-        return result.Message;
+        return result;
       },
 
       numberGuesses() {

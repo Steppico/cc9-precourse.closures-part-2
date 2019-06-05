@@ -138,7 +138,7 @@ describe("accountGenerator", () => {
   it("withdraw should deny the transaction if the balance is smaller than the requested amount",()=>{
     const account = accountGenerator(500);
     const withdraw = account.withdraw(600);
-    expect(withdraw.status).toBe("denied");
+    expect(account.getBalance()).toBe(500);
   });
 
   it("deposit should return an object", ()=>{
